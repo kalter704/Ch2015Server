@@ -1,52 +1,53 @@
 package frontend;
 
-import templater.PageGenerator;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author v.chibrikov
  */
 public class Frontend extends HttpServlet {
 
-    private String login = "";
+    @Override
+    public void doGet(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws ServletException, IOException {
+                /*
 
-    public void doGet(HttpServletRequest request,
-                      HttpServletResponse response) throws ServletException, IOException {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
 
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("lastLogin", login == null ? "" : login);
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("name", login);
+        jsonResponse.put("auth", false);
+        jsonResponse.put("NotNull", false);
 
-        response.getWriter().println(PageGenerator.getPage("authform.html", pageVariables));
 
-        response.setContentType("text/html;charset=utf-8");
+        HttpSession session = request.getSession();
+
+        if (login != null && password != null) {
+            jsonResponse.put("NotNull", true);
+            if (accountService.singIn(session, login, password) != -1) {
+                jsonResponse.put("auth", true);
+            }
+        }
+        */
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("namePerem", "right");
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jsonResponse.toString());
         response.setStatus(HttpServletResponse.SC_OK);
-
     }
 
-    public void doPost(HttpServletRequest request,
-                       HttpServletResponse response) throws ServletException, IOException {
-
-        login = request.getParameter("login");
-
-        response.setContentType("text/html;charset=utf-8");
-
-        if (login == null || login.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        } else {
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
-
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("lastLogin", login == null ? "" : login);
-
-        response.getWriter().println(PageGenerator.getPage("authform.html", pageVariables));
+    @Override
+    public void doPost(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws ServletException, IOException {
     }
 }
 
