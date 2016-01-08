@@ -28,8 +28,8 @@ public class Main {
         Frontend frontend = new Frontend();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(frontend), "/");
-        context.addServlet(new ServletHolder(new SocketGlobalChatServlet(globalChatService)), "/globalchat");
+        context.addServlet(new ServletHolder(frontend), "/qwe");
+        context.addServlet(new ServletHolder(new SocketGlobalChatServlet(globalChatService)), "/");
 
         Server server = new Server(port);
         server.setHandler(context);
