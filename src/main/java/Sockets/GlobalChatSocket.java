@@ -1,10 +1,7 @@
 package Sockets;
 
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.eclipse.jetty.websocket.api.annotations.*;
 
 import java.io.IOException;
 
@@ -39,11 +36,12 @@ public class GlobalChatSocket {
     @OnWebSocketMessage
     public void onMessage(String data) {
         System.out.append("GlobalChatSocket onMessage" + '\n');
+        System.out.append("GlobalChatSocket onMessage: " + data + '\n');
         globalChatService.sendMessageToAllUsers(data);
     }
 
     @OnWebSocketConnect
-    public void onOpen(Session session) {
+    public void onConnect(Session session) {
         System.out.append("GlobalChatSocket onOpen" + '\n');
         this.session = session;
         globalChatService.registerSocket(this);
@@ -53,5 +51,10 @@ public class GlobalChatSocket {
     public void onClose(int statusCode, String reason) {
         System.out.append("GlobalChatSocket onClose" + '\n');
         globalChatService.deleteSocket(this);
+    }
+
+    @OnWebSocketError
+    public void onError(Throwable t) {
+        System.out.println("Error: " + t.getMessage());
     }
 }
